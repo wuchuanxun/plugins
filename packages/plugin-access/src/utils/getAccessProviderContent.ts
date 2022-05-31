@@ -27,14 +27,13 @@ const AccessProvider: React.FC<Props> = props => {
   if (process.env.NODE_ENV === 'development' && (access === undefined || access === null)) {
     console.warn('[plugin-access]: the access instance created by access.ts(js) is nullish, maybe you need check it.');
   }
+  
+  props.routes.splice(0,props.routes.length,...traverseModifyRoutes(props.routes, access))
 
   return React.createElement(
     AccessContext.Provider,
     { value: access },
-    React.cloneElement(children, {
-      ...children.props,
-      routes:traverseModifyRoutes(props.routes, access)
-    }),
+    children
   );
 };
 
